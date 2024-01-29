@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PropTypes from 'prop-types';
 
 const CommentForm = ({handleSubmit, submitLabel}) => {
     const [text,setText]= useState('');
@@ -15,5 +16,8 @@ const CommentForm = ({handleSubmit, submitLabel}) => {
         </form>
     );
 };
-
+CommentForm.propTypes = {
+    handleSubmit: PropTypes.func,
+    submitLabel: PropTypes.string,
+}
 export default CommentForm;

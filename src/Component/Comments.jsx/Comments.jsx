@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { getComments as getCommentApi, createComment as createCommentApi } from '../api';
+import PropTypes from 'prop-types';
+import { getComments as getCommentApi, createComment as createCommentApi,deleteComment as deleteCommentApi } from '../api';
 import Comment from '../Comment/Comment';
 import CommentForm from '../CommentForm/CommentForm';
 const Comments = ({ currentUserId }) => {
@@ -12,13 +13,23 @@ const Comments = ({ currentUserId }) => {
     const getReplies = (commentId) => {
         return backendComments.filter(backendComment => backendComment.parentId === commentId).sort((a, b) => new Date(a.createdAd).getTime() - new Date(b.createdAd))
     }
+    //new comment add
     const addComment = (text, parentId)=>{
         console.log('addComment', text, parentId)
         createCommentApi(text, parentId).then(comment =>{
             setBackendComment([comment, ...backendComments])
         })
     }
+//delete comment
+const deleteComment = (commentId)=>{
+if(window.confirm('are you sure that you want to remove comment?')){
+    deleteCommentApi(commentId).then(()=>{
+        const updateBackendComment = backendComments.filter(backendComment => backendComment.id !== commentId)
+        setBackendComment(updateBackendComment)
+    })
+}
 
+}
 
     useEffect(() => {
         getCommentApi().then(data => {
@@ -36,11 +47,16 @@ const Comments = ({ currentUserId }) => {
                     rootComments.map(rootComment => <Comment key={rootComment.id}
                         comment={rootComment}
                         replies={getReplies(rootComment.id)}
+                        currentUserId={currentUserId}
+                        deleteComment={deleteComment}
                     ></Comment>)
                 }
             </div>
         </div>
     );
 };
+Comments.propTypes = {
+    currentUserId: PropTypes.array,
 
+}
 export default Comments;
