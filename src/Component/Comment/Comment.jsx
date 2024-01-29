@@ -14,8 +14,7 @@ const Comment = ({ comment, replies }) => {
                 <div className='comment-text'>{comment.body}</div>
                 {replies.length > 0 && (
                     <div className='replies'>
-                        {replies.map(reply => (
-                            <Comment key={reply.id} 
+                        {replies.map(reply => (<Comment key={reply.id}
                             comment={reply}
                             replies={[]}
                              />
