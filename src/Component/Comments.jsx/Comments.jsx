@@ -5,7 +5,8 @@ import Comment from '../Comment/Comment';
 import CommentForm from '../CommentForm/CommentForm';
 const Comments = ({ currentUserId }) => {
     const [backendComments, setBackendComment] = useState([])
-
+    const [activeComment,setActiveComment]=useState(null)
+    console.log(backendComments)
     //comment data
     const rootComments = backendComments.filter(backendComment => backendComment.parentId === null)
 
@@ -18,6 +19,7 @@ const Comments = ({ currentUserId }) => {
         console.log('addComment', text, parentId)
         createCommentApi(text, parentId).then(comment =>{
             setBackendComment([comment, ...backendComments])
+            setActiveComment(null)
         })
     }
 //delete comment
@@ -49,6 +51,9 @@ if(window.confirm('are you sure that you want to remove comment?')){
                         replies={getReplies(rootComment.id)}
                         currentUserId={currentUserId}
                         deleteComment={deleteComment}
+                        activeComment={activeComment}
+                        setActiveComment={setActiveComment}
+                        addComment={addComment}
                     ></Comment>)
                 }
             </div>
@@ -56,7 +61,7 @@ if(window.confirm('are you sure that you want to remove comment?')){
     );
 };
 Comments.propTypes = {
-    currentUserId: PropTypes.array,
+    currentUserId: PropTypes.string,
 
 }
 export default Comments;
